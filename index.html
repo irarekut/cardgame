@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Card game</title>
+        <link rel="stylesheet" href="src/style/style.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card game</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <body>
+        <div class="game"></div>
+        <script src="src/js/cardDeck.js"></script>
+        <script src="src/js/lib/templateEngine.js"></script>
+        <script src="src/js/difficulty.js"></script>
+        <script src="src/js/start.js"></script>
+        <script>
+            window.application = {
+                blocks: {},
+                screens: {},
+                renderScreen: function (screenName) {
+                    if (!window.application.screens[screenName]) {
+                        console.log('Такой страницы не существует');
+                    } else {
+                        this.screens[screenName];
+                    }
 
-<body>
-    <div class="game"></div>
+                    window.application.timers.forEach((element) => {
+                        clearInterval(element);
+                    });
+                },
+                renderBlock: function (blockName, container) {
+                    if (!window.application.blocks[blockName]) {
+                        console.log('Такого блока не существует');
+                    } else {
+                        this.blocks[blockName](container);
+                    }
+                },
+                timers: [],
+            };
 
-    <script src="difficulty.js"></script>
-    <script src="start.js"></script>
-    <script>
-        window.application = {
-            blocks: {},
-            screens: {},
-            renderScreen: function (screenName) {
-                if (!window.application.screens[screenName]) {
-                    console.log('Такой страницы не существует');
-                } else {
-                    this.screens[screenName];
-                };
+            const game = document.querySelector('.game');
 
-                window.application.timers.forEach(element => {
-                    clearInterval(element)
-                });
-            },
-            renderBlock: function (blockName, container) {
-                if (!window.application.blocks[blockName]) {
-                    console.log('Такого блока не существует');
-                } else {
-                    this.blocks[blockName](container);
-                };
-            },
-            timers: []
-        };
-
-        const game = document.querySelector('.game');
-
-
-        window.application.screens['screenDifficulty'] = renderScreenDifficulty();
-        window.application.screens.screenDifficulty;
-
-    </script>
-</body>
-
+            window.application.screens['screenDifficulty'] =
+                renderScreenDifficulty();
+            window.application.screens.screenDifficulty;
+        </script>
+    </body>
 </html>
