@@ -2,7 +2,7 @@
     font-family: StratosSkyeng;
     font-style: normal;
     src: local('StratosSkyeng'),
-        url(/fonts/stratosskyengweb-regular.woff2) format('woff2');
+        url('/fonts/stratosskyengweb-regular.woff2') format('woff2');
 }
 
 * {
@@ -12,7 +12,7 @@
 
 body {
     background-color: #004980;
-    font-family: StratosSkyeng;
+    font-family: StratosSkyeng, sans-serif;
 }
 
 .center {
@@ -32,11 +32,10 @@ body {
     padding-top: 52px;
     width: 480px;
     height: 459px;
-    background: #C2F5FF;
+    background: #c2f5ff;
     border-radius: 12px;
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-flow: column nowrap;
     align-items: center;
 
     &_header {
@@ -64,25 +63,25 @@ body {
         opacity: 0;
     }
 
-    &_input:checked+&_label {
-        border: 3px solid #7AC100;
-        box-sizing: border-box;
-    }
-
     &_label {
         padding-top: 13px;
         width: 98px;
         height: 98px;
-        background: #FFFFFF;
+        background: #fff;
         border-radius: 12px;
-        color: #0080C1;
+        color: #0080c1;
         font-style: normal;
         font-weight: 400;
         font-size: 64px;
         line-height: 72px;
         text-align: center;
         outline: none;
-        border: 1px solid #FFFFFF;
+        border: 1px solid #fff;
+        box-sizing: border-box;
+    }
+
+    &_input:checked + &_label {
+        border: 3px solid #7ac100;
         box-sizing: border-box;
     }
 }
@@ -90,15 +89,15 @@ body {
 .button {
     width: 246px;
     height: 50px;
-    background: #7AC100;
+    background: #7ac100;
     border-radius: 12px;
-    border: 1px solid #7AC100;
+    border: 1px solid #7ac100;
     box-sizing: border-box;
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
     line-height: 32px;
-    color: #FFFFFF;
+    color: #fff;
     text-align: center;
 }
 
@@ -108,21 +107,20 @@ body {
     margin-left: 22px;
     margin-right: 22px;
     display: flex;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     justify-content: space-between;
 
     &_timer_ {
         font-style: normal;
         font-weight: 400;
         display: flex;
-        flex-direction: row;
+        flex-flow: row wrap;
         max-width: 155px;
-        flex-wrap: wrap;
 
         &_caption {
             font-size: 16px;
             line-height: 32px;
-            color: #FFFFFF;
+            color: #fff;
             padding-left: 40px;
             text-align: end;
         }
@@ -130,7 +128,7 @@ body {
         &_time {
             font-size: 64px;
             line-height: 72px;
-            color: #FFFFFF;
+            color: #fff;
         }
     }
 
