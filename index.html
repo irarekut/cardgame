@@ -11,39 +11,8 @@
     <body>
         <div class="game"></div>
         <script src="src/js/cardDeck.js"></script>
-        <script src="src/js/lib/templateEngine.js"></script>
         <script src="src/js/difficulty.js"></script>
         <script src="src/js/start.js"></script>
-        <script>
-            window.application = {
-                blocks: {},
-                screens: {},
-                renderScreen: function (screenName) {
-                    if (!window.application.screens[screenName]) {
-                        console.log('Такой страницы не существует');
-                    } else {
-                        this.screens[screenName];
-                    }
-
-                    window.application.timers.forEach((element) => {
-                        clearInterval(element);
-                    });
-                },
-                renderBlock: function (blockName, container) {
-                    if (!window.application.blocks[blockName]) {
-                        console.log('Такого блока не существует');
-                    } else {
-                        this.blocks[blockName](container);
-                    }
-                },
-                timers: [],
-            };
-
-            const game = document.querySelector('.game');
-
-            window.application.screens['screenDifficulty'] =
-                renderScreenDifficulty();
-            window.application.screens.screenDifficulty;
-        </script>
+        <script src="src/js/index.js"></script>
     </body>
 </html>
