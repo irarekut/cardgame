@@ -1,12 +1,16 @@
-function renderScreenStart() {
-    game.innerHTML = '';
+import { application } from '/src/js/application.js';
+import { game } from '/src/js/index.js';
 
-    window.application.blocks[('start', game)] = renderBlockStartHead();
-    window.application.blocks.start;
-
-    window.application.blocks[('field', game)] = renderBlockStartField();
-    window.application.blocks.field;
+export function renderScreenStart() {
+    application.renderBlock('start');
+    application.renderBlock('field');
 }
+
+application.blocks['start'] = renderBlockStartHead;
+application.blocks['field'] = renderBlockStartField;
+
+let arrCards;
+let numberCards;
 
 function renderBlockStartHead() {
     const headStart = document.createElement('div');
@@ -26,11 +30,11 @@ function renderBlockStartHead() {
     captionSek.classList = 'head__timer__caption';
     captionSek.textContent = 'sec';
 
-    timerMin = document.createElement('div');
+    const timerMin = document.createElement('div');
     timerMin.classList = 'head__timer__time';
     timerMin.textContent = '00';
 
-    timerSek = document.createElement('div');
+    const timerSek = document.createElement('div');
     timerSek.classList = 'head__timer__time sek';
     timerSek.textContent = '00';
 
@@ -51,9 +55,7 @@ function renderBlockStartHead() {
     let minutes = 0;
     let seconds = 0;
     let nIntervId;
-    let arrCards;
-    let numberCards;
-    window.application.idCards = [];
+    application.idCards = [];
 
     function tick() {
         seconds++;
@@ -78,8 +80,7 @@ function renderBlockStartHead() {
         } else {
             timerSek.textContent = seconds;
         }
-        window.application.timer =
-            timerMin.textContent + '.' + timerSek.textContent;
+        application.timer = timerMin.textContent + '.' + timerSek.textContent;
     }
     function timer() {
         nIntervId = setInterval(() => {
@@ -91,11 +92,11 @@ function renderBlockStartHead() {
 
     buttonReset.addEventListener('click', () => {
         clearInterval(nIntervId);
-        window.application.timer = 0;
-        window.application.screens['screenDifficulty'] =
-            renderScreenDifficulty();
-        window.application.screens.screenDifficulty;
+        application.timer = 0;
+        application.screens['screenDifficulty'] = renderScreenDifficulty();
+        application.screens.screenDifficulty;
     });
+    application.blocks['start'] = renderBlockStartHead;
 }
 
 function renderBlockStartField() {
@@ -107,7 +108,7 @@ function renderBlockStartField() {
     const cardDeck = JSON.parse(data);
 
     function getRandom(arr, n) {
-        var result = new Array(n),
+        let result = new Array(n),
             len = arr.length,
             taken = new Array(len);
         if (n > len)
@@ -115,7 +116,7 @@ function renderBlockStartField() {
                 'getRandom: more elements taken than available'
             );
         while (n--) {
-            var x = Math.floor(Math.random() * len);
+            let x = Math.floor(Math.random() * len);
             result[n] = arr[x in taken ? taken[x] : x];
             taken[x] = --len;
         }
@@ -123,19 +124,19 @@ function renderBlockStartField() {
     }
 
     function getCardDeck(numberCards) {
-        arr = getRandom(cardDeck, numberCards);
+        let arr = getRandom(cardDeck, numberCards);
         arrCards = [].concat(arr, Object.assign([], arr));
         arrCards.sort(() => Math.floor(Math.random() - 0.5));
     }
 
     function level() {
-        if (window.application.level === 'level 1') {
+        if (application.level === 'level 1') {
             numberCards = 3;
         }
-        if (window.application.level === 'level 2') {
+        if (application.level === 'level 2') {
             numberCards = 6;
         }
-        if (window.application.level === 'level 3') {
+        if (application.level === 'level 3') {
             numberCards = 9;
         }
     }
@@ -170,22 +171,23 @@ function renderBlockStartField() {
     field.addEventListener('click', (event) => {
         const cardClick = event.target;
         cardClick.classList.remove('hidden');
-        window.application.idCards.push(cardClick.id);
+        application.idCards.push(cardClick.id);
 
-        if (window.application.idCards.length === 2) {
+        if (application.idCards.length === 2) {
             compareCards();
         }
     });
 
     function compareCards() {
-        if (window.application.idCards[0] === window.application.idCards[1]) {
-            window.application.idCards = [];
+        if (application.idCards[0] === application.idCards[1]) {
+            application.idCards = [];
             alert('Вы победили');
         } else {
-            window.application.idCards = [];
+            application.idCards = [];
             alert('Вы проиграли');
         }
     }
 
-    window.application.timers.push(setTimeout(cardsHidden, 5000));
+    application.timers.push(setTimeout(cardsHidden, 5000));
+    application.blocks['field'] = renderBlockStartField;
 }

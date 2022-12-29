@@ -1,28 +1,8 @@
-window.application = {
-    blocks: {},
-    screens: {},
-    renderScreen: function (screenName) {
-        if (!window.application.screens[screenName]) {
-            console.log('Такой страницы не существует');
-        } else {
-            this.screens[screenName];
-        }
+import { application } from '/src/js/application.js';
+import { renderScreenDifficulty } from './difficulty.js';
 
-        window.application.timers.forEach((element) => {
-            clearInterval(element);
-        });
-    },
-    renderBlock: function (blockName, container) {
-        if (!window.application.blocks[blockName]) {
-            console.log('Такого блока не существует');
-        } else {
-            this.blocks[blockName](container);
-        }
-    },
-    timers: [],
-};
+export const game = document.querySelector('.game');
 
-const game = document.querySelector('.game');
+application.screens['screenDifficulty'] = renderScreenDifficulty;
 
-window.application.screens['screenDifficulty'] = renderScreenDifficulty();
-window.application.screens.screenDifficulty;
+application.renderScreen('screenDifficulty');
