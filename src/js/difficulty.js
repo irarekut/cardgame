@@ -1,11 +1,9 @@
-import { application } from '/src/js/application.js';
-import { game } from '/src/js/index.js';
-import { renderScreenStart } from '/src/js/start.js';
+function renderScreenDifficulty() {
+    game.innerHTML = '';
 
-export function renderScreenDifficulty() {
-    application.renderBlock('difficulty');
+    window.application.blocks[('difficulty', game)] = renderBlockDifficulty();
+    window.application.blocks.difficulty;
 }
-application.blocks['difficulty'] = renderBlockDifficulty;
 
 function renderBlockDifficulty() {
     const block = document.createElement('div');
@@ -73,16 +71,16 @@ function renderBlockDifficulty() {
 
     startBtn.addEventListener('click', () => {
         if (level1.checked === true) {
-            application.level = 'level 1';
+            window.application.level = 'level 1';
         }
         if (level2.checked === true) {
-            application.level = 'level 2';
+            window.application.level = 'level 2';
         }
         if (level3.checked === true) {
-            application.level = 'level 3';
+            window.application.level = 'level 3';
         }
 
-        application.renderScreen('start');
+        window.application.screens.start();
     });
-    application.screens['start'] = renderScreenStart;
+    window.application.screens['start'] = renderScreenStart;
 }

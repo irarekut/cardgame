@@ -10,37 +10,24 @@
     },
     "devDependencies": {
         "axios": "^1.2.1",
-        "copy-webpack-plugin": "^11.0.0",
-        "css-loader": "^6.7.3",
-        "css-minimizer-webpack-plugin": "^4.2.2",
         "eslint": "^8.30.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
-        "html-webpack-plugin": "^5.5.0",
         "husky": "^8.0.2",
-        "mini-css-extract-plugin": "^2.7.2",
         "prettier": "^2.8.1",
         "stylelint": "^14.16.0",
         "stylelint-config-prettier": "^9.0.4",
         "stylelint-config-standard": "^29.0.0",
-        "stylelint-prettier": "^2.0.0",
-        "ts-loader": "^9.4.2",
-        "typescript": "^4.9.4",
-        "webpack": "^5.75.0",
-        "webpack-cli": "^5.0.1",
-        "webpack-dev-server": "^4.11.1"
+        "stylelint-prettier": "^2.0.0"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "server": "http-server -p 5500",
+        "start": "http-server -p 5500",
         "format": "prettier --write ./src/",
-        "lint:js": "eslint ./src/**/*.ts",
+        "lint:js": "eslint ./src/**/*.js",
         "lint:css": "stylelint './src/**/*.scss'",
         "lint": "npm run lint:js && npm run lint:css",
-        "prepare": "husky install",
-        "build": "NODE_ENV=production webpack",
-        "start": "webpack-dev-server --open",
-        "lint:ts": "tsc --noEmit"
+        "prepare": "husky install"
     },
     "repository": {
         "type": "git",
