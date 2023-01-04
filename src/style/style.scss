@@ -99,6 +99,7 @@ body {
     line-height: 32px;
     color: #fff;
     text-align: center;
+    cursor: pointer;
 }
 
 .head_ {
@@ -141,11 +142,15 @@ body {
     }
 }
 
+.containerStart {
+    display: flex;
+    justify-content: center;
+}
+
 .field_ {
     margin-top: 35px;
     display: grid;
-    grid-template-columns: repeat(9, 98px);
-    justify-content: center;
+    grid-template-columns: repeat(6, 98px);
     gap: 15px;
 
     &_card {
@@ -153,7 +158,7 @@ body {
         height: 133px;
         border-radius: 4px;
         box-sizing: border-box;
-        background-image: url('/img/cardBack.jpg');
+        background-image: url('/static/cardBack.jpg');
     }
 
     &_img {
@@ -166,4 +171,60 @@ body {
 
 .hidden {
     opacity: 0;
+}
+
+.result_ {
+    height: 100vh;
+    width: 150vh;
+    background-color: #004980;
+    opacity: 0.7;
+    position: absolute;
+
+    &_block {
+        width: 480px;
+        height: 459px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1);
+        background: #c2f5ff;
+        border-radius: 12px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &_img {
+        margin-top: 30px;
+        width: 96px;
+        height: 96px;
+    }
+
+    &_congrat {
+        margin-top: 5px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 40px;
+        line-height: 48px;
+        color: #004980;
+    }
+
+    &_timeText {
+        margin-top: 28px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 32px;
+        color: #000;
+    }
+
+    &_time {
+        margin-top: 10px;
+        margin-bottom: 40px;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 64px;
+        line-height: 72px;
+        color: #000;
+    }
 }

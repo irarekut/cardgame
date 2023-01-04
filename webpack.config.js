@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
@@ -7,12 +8,17 @@ const mode =
     process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 module.exports = {
-    entry: './src/js/index.js',
+    entry: './src/js/index.ts',
     mode,
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.ts$/i,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.css$/i,
                 use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
             {
@@ -25,13 +31,24 @@ module.exports = {
             },
         ],
     },
-    optimization: {
-        minimizer: ['...', new CssMinimizerPlugin()],
+    resolve: {
+        extensions: ['.ts', '.js'],
     },
     devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
     },
-    plugins: [new MiniCssExtractPlugin(), new HtmlWebpackPlugin()],
+    plugins: [
+        new MiniCssExtractPlugin(),
+        new CopyPlugin({
+            patterns: [{ from: 'static', to: 'static' }],
+        }),
+        new HtmlWebpackPlugin({
+            template: '/index.html',
+        }),
+    ],
+    optimization: {
+        minimizer: ['...', new CssMinimizerPlugin()],
+    },
 };
