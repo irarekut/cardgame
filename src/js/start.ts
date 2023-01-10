@@ -1,5 +1,8 @@
-import { application } from '/src/js/application.js';
-import { game } from '/src/js/index.js';
+import { game } from '/src/js/index.ts';
+import { renderScreenDifficulty } from '/src/js/difficulty.ts';
+import { application } from '/src/js/application.ts';
+import { data } from '/src/js/cardDeck.ts';
+import { renderBlockResult } from '/src/js/result.ts';
 
 export function renderScreenStart() {
     application.renderBlock('start');
@@ -9,37 +12,39 @@ export function renderScreenStart() {
 application.blocks['start'] = renderBlockStartHead;
 application.blocks['field'] = renderBlockStartField;
 
-let arrCards;
-let numberCards;
+let numberCards: number;
+let arrCards: any[];
+let timeGame: string;
+export let nIntervId: NodeJS.Timer;
 
 function renderBlockStartHead() {
     const headStart = document.createElement('div');
-    headStart.classList = 'center head_';
+    headStart.classList.add('center', 'head_');
 
     const timerContainer = document.createElement('div');
-    timerContainer.classList = 'head__timer_';
+    timerContainer.classList.add('head__timer_');
 
     const min = document.createElement('div');
     const sek = document.createElement('div');
 
     const captionMin = document.createElement('p');
-    captionMin.classList = 'head__timer__caption';
+    captionMin.classList.add('head__timer__caption');
     captionMin.textContent = 'min';
 
     const captionSek = document.createElement('p');
-    captionSek.classList = 'head__timer__caption';
+    captionSek.classList.add('head__timer__caption');
     captionSek.textContent = 'sec';
 
     const timerMin = document.createElement('div');
-    timerMin.classList = 'head__timer__time';
+    timerMin.classList.add('head__timer__time');
     timerMin.textContent = '00';
 
     const timerSek = document.createElement('div');
-    timerSek.classList = 'head__timer__time sek';
+    timerSek.classList.add('head__timer__time', 'sek');
     timerSek.textContent = '00';
 
     const buttonReset = document.createElement('button');
-    buttonReset.classList = 'button head__button';
+    buttonReset.classList.add('button', 'head__button');
     buttonReset.textContent = 'Начать заново';
 
     game.appendChild(headStart);
@@ -54,7 +59,6 @@ function renderBlockStartHead() {
 
     let minutes = 0;
     let seconds = 0;
-    let nIntervId;
     application.idCards = [];
 
     function tick() {
@@ -67,24 +71,20 @@ function renderBlockStartHead() {
             }
         }
     }
-
-    function addTime() {
-        tick();
-        if (minutes <= 9) {
-            timerMin.textContent = '0' + minutes;
-        } else {
-            min.textContent = minutes;
-        }
-        if (seconds <= 9) {
-            timerSek.textContent = '0' + seconds;
-        } else {
-            timerSek.textContent = seconds;
-        }
-        application.timer = timerMin.textContent + '.' + timerSek.textContent;
-    }
     function timer() {
         nIntervId = setInterval(() => {
-            addTime();
+            tick();
+            if (minutes <= 9) {
+                timerMin.textContent = '0' + minutes;
+            } else {
+                min.textContent = minutes.toString();
+            }
+            if (seconds <= 9) {
+                timerSek.textContent = '0' + seconds;
+            } else {
+                timerSek.textContent = seconds.toString();
+            }
+            timeGame = timerMin.textContent + '.' + timerSek.textContent;
         }, 1000);
     }
 
@@ -93,21 +93,22 @@ function renderBlockStartHead() {
     buttonReset.addEventListener('click', () => {
         clearInterval(nIntervId);
         application.timer = 0;
-        application.screens['screenDifficulty'] = renderScreenDifficulty();
-        application.screens.screenDifficulty;
+        application.renderScreen('screenDifficulty');
     });
+    application.screens['screenDifficulty'] = renderScreenDifficulty;
     application.blocks['start'] = renderBlockStartHead;
 }
 
 function renderBlockStartField() {
+    const containerStart = document.createElement('div');
+    containerStart.classList.add('containerStart', 'center');
     const field = document.createElement('div');
-    field.classList = 'field_ center';
+    field.classList.add('field_');
 
-    game.appendChild(field);
+    game.appendChild(containerStart);
+    containerStart.appendChild(field);
 
-    const cardDeck = JSON.parse(data);
-
-    function getRandom(arr, n) {
+    function getRandom(arr: Array<string>, n: number) {
         let result = new Array(n),
             len = arr.length,
             taken = new Array(len);
@@ -122,11 +123,14 @@ function renderBlockStartField() {
         }
         return result;
     }
+    console.log(data);
+    const cardDeck = JSON.parse(data);
 
-    function getCardDeck(numberCards) {
+    function getCardDeck(numberCards: number) {
         let arr = getRandom(cardDeck, numberCards);
         arrCards = [].concat(arr, Object.assign([], arr));
         arrCards.sort(() => Math.floor(Math.random() - 0.5));
+        console.log('arrCards' + arrCards);
     }
 
     function level() {
@@ -146,10 +150,10 @@ function renderBlockStartField() {
     function cardFieldRender() {
         for (let i = 0; i < arrCards.length; i++) {
             const cardBox = document.createElement('div');
-            cardBox.classList = 'field__card';
+            cardBox.classList.add('field__card');
 
             const imgCard = document.createElement('img');
-            imgCard.classList = 'field__img';
+            imgCard.classList.add('field__img');
             imgCard.src = arrCards[i].img_front;
             imgCard.id = arrCards[i].name;
 
@@ -170,24 +174,34 @@ function renderBlockStartField() {
 
     field.addEventListener('click', (event) => {
         const cardClick = event.target;
-        cardClick.classList.remove('hidden');
-        application.idCards.push(cardClick.id);
+        (cardClick as HTMLElement).classList.remove('hidden');
+        application.idCards.push((cardClick as HTMLElement).id);
 
         if (application.idCards.length === 2) {
-            compareCards();
+            if (application.idCards[0] === application.idCards[1]) {
+                numberCards = numberCards - 1;
+                if (numberCards === 0) {
+                    application.result = true;
+                    application.idCards = [];
+                    application.timer = timeGame;
+                    application.renderBlock('result');
+                    clearInterval(nIntervId);
+                } else {
+                    application.idCards = [];
+                    return;
+                }
+            } else {
+                application.idCards = [];
+                application.timer = timeGame;
+                application.result = false;
+                application.renderBlock('result');
+                clearInterval(nIntervId);
+            }
         }
     });
 
-    function compareCards() {
-        if (application.idCards[0] === application.idCards[1]) {
-            application.idCards = [];
-            alert('Вы победили');
-        } else {
-            application.idCards = [];
-            alert('Вы проиграли');
-        }
-    }
-
+    application.timers.push(setTimeout(cardsHidden, 5000));
     application.timers.push(setTimeout(cardsHidden, 5000));
     application.blocks['field'] = renderBlockStartField;
+    application.blocks['result'] = renderBlockResult;
 }
