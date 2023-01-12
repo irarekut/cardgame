@@ -23,7 +23,7 @@ export const application: obj = {
             this.screens[screenName]();
         }
     },
-    renderBlock: function (blockName: string, container: any) {
+    renderBlock: function (blockName: string, container: HTMLElement) {
         if (!application.blocks[blockName]) {
             console.log('Такого блока не существует');
         } else {

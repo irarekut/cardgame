@@ -2,6 +2,7 @@ import { game } from '/src/js/index.ts';
 import { renderScreenDifficulty } from './difficulty';
 import { application } from '/src/js/application.ts';
 import { nIntervId } from '/src/js/start.ts';
+import { resetTime } from '/src/js/tick.ts';
 
 export function renderBlockResult() {
     const resultBackground = document.createElement('div');
@@ -38,6 +39,7 @@ export function renderBlockResult() {
 
     resultBtn.addEventListener('click', () => {
         clearInterval(nIntervId);
+        resetTime();
         application.timer = 0;
         application.renderScreen('screenDifficulty');
     });

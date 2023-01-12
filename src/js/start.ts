@@ -3,6 +3,8 @@ import { renderScreenDifficulty } from '/src/js/difficulty.ts';
 import { application } from '/src/js/application.ts';
 import { data } from '/src/js/cardDeck.ts';
 import { renderBlockResult } from '/src/js/result.ts';
+import { tick, getMinutes, getSeconds } from '/src/js/tick.ts';
+import { level } from '/src/js/level.ts';
 
 export function renderScreenStart() {
     application.renderBlock('start');
@@ -13,7 +15,10 @@ application.blocks['start'] = renderBlockStartHead;
 application.blocks['field'] = renderBlockStartField;
 
 let numberCards: number;
-let arrCards: any[];
+let arrCards: Array<{
+    name: string;
+    img_front: string;
+}>;
 let timeGame: string;
 export let nIntervId: NodeJS.Timer;
 
@@ -57,32 +62,20 @@ function renderBlockStartHead() {
     sek.appendChild(timerSek);
     headStart.appendChild(buttonReset);
 
-    let minutes = 0;
-    let seconds = 0;
     application.idCards = [];
 
-    function tick() {
-        seconds++;
-        if (seconds >= 60) {
-            minutes++;
-            seconds = 0;
-            if (minutes >= 60) {
-                minutes = 0;
-            }
-        }
-    }
     function timer() {
         nIntervId = setInterval(() => {
             tick();
-            if (minutes <= 9) {
-                timerMin.textContent = '0' + minutes;
+            if (getMinutes() <= 9) {
+                timerMin.textContent = '0' + getMinutes();
             } else {
-                min.textContent = minutes.toString();
+                min.textContent = getMinutes().toString();
             }
-            if (seconds <= 9) {
-                timerSek.textContent = '0' + seconds;
+            if (getSeconds() <= 9) {
+                timerSek.textContent = '0' + getSeconds();
             } else {
-                timerSek.textContent = seconds.toString();
+                timerSek.textContent = getSeconds().toString();
             }
             timeGame = timerMin.textContent + '.' + timerSek.textContent;
         }, 1000);
@@ -93,6 +86,7 @@ function renderBlockStartHead() {
     buttonReset.addEventListener('click', () => {
         clearInterval(nIntervId);
         application.timer = 0;
+        resetTime();
         application.renderScreen('screenDifficulty');
     });
     application.screens['screenDifficulty'] = renderScreenDifficulty;
@@ -123,28 +117,17 @@ function renderBlockStartField() {
         }
         return result;
     }
-    console.log(data);
+
     const cardDeck = JSON.parse(data);
 
     function getCardDeck(numberCards: number) {
         let arr = getRandom(cardDeck, numberCards);
         arrCards = [].concat(arr, Object.assign([], arr));
         arrCards.sort(() => Math.floor(Math.random() - 0.5));
-        console.log('arrCards' + arrCards);
     }
 
-    function level() {
-        if (application.level === 'level 1') {
-            numberCards = 3;
-        }
-        if (application.level === 'level 2') {
-            numberCards = 6;
-        }
-        if (application.level === 'level 3') {
-            numberCards = 9;
-        }
-    }
-    level();
+    numberCards = level(application.level);
+
     getCardDeck(numberCards);
 
     function cardFieldRender() {
@@ -200,7 +183,6 @@ function renderBlockStartField() {
         }
     });
 
-    application.timers.push(setTimeout(cardsHidden, 5000));
     application.timers.push(setTimeout(cardsHidden, 5000));
     application.blocks['field'] = renderBlockStartField;
     application.blocks['result'] = renderBlockResult;
