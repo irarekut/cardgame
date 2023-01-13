@@ -1,4 +1,4 @@
-export function level(levelName: string): number {
+function level(levelName: string): number {
     if (levelName === 'level 1') {
         return 3;
     }
@@ -10,3 +10,5 @@ export function level(levelName: string): number {
     }
     return 0;
 }
+
+module.exports = { level };

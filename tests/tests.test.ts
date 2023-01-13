@@ -1,7 +1,8 @@
-const { it } = require('@jest/globals');
-const assert = require('assert').strict;
-import { tick, getSeconds, getMinutes, resetTime } from 'tick.ts';
-import { level } from 'level.ts';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const assert = require('assert');
+const { it, describe } = require('@jest/globals');
+const { tick, getSeconds, getMinutes, resetTime } = require('tick.ts');
+const { level } = require('level.ts');
 
 describe('tick', () => {
     it('should increase seconds by 1 when tick', () => {
@@ -46,3 +47,5 @@ describe('level', () => {
         assert.equal(level(levelName), expected);
     });
 });
+
+export {};
