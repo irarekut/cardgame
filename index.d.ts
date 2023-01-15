@@ -1,4 +1,7 @@
 declare module '*.ts';
 declare interface Window {
-    data?: any;
+    data?: Array<{
+        name: string;
+        img_front: string;
+    }>;
 }
