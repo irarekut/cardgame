@@ -34,7 +34,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.ts'],
+        extensions: ['.wasm', '.ts', '.tsx', '.mjs', '.cjs', '.js', '.json'],
     },
     devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
     output: {
